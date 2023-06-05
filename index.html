@@ -4,20 +4,30 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel ="stylesheet"  href="style.css"/>
-    <script src="script.js" defer></script>
     <title>BBall Breakdown</title>
+    <link rel ="stylesheet"  href="style.css"/>
 </head>
 <body>
-    <h1>Basketball Breakdown</h1>
-    <form id="searchForm">
-        <input type="text" id="searchInput" placeholder="Search...">
-        <button type="submit">Search</button>
-      </form>
-    <div class="buttons">
-        <button id="find-team">Find a Team</button>
-        <button id="find-player">Find a Player</button>
-        <button id="standings">Find Teams Record/Standings</button>
-    </div>     
+  <div class="buttons">
+      <h1>Basketball Breakdown</h1>
+      <button id="random-team">Random Team</button>
+      <div id="teamsContainer">
+        
+      </div>
+        <form id="searchFormTeam">
+            <input type="text" id="findTeam" placeholder="Find Team...">
+            <button id="submitTeam">Search</button>
+          </form>
+        <button id="random-player">Random Player</button>
+        <div id="playersContainer"></div>
+        <form id="searchFormPlayer">
+            <input type="text" id="findPlayer" placeholder="Find Player...">
+            <button id="submitPlayer">Search</button>
+          </form>
+        <button id="records">Get Team Records</button>
+        <button id="hideStandings">Hide Records</button>
+        <div id="standingsContainer"></div>
+    </div>    
+    <script src="script.js" ></script> 
 </body>
 </html>
