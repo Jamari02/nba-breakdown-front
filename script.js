@@ -6,17 +6,23 @@ const grabPlayer = document.getElementById('searchFormPlayer').addEventListener(
 const grabTeam = document.getElementById('searchFormTeam').addEventListener('submit', searchTeam);
 const hideStandingsButton = document.getElementById('hideStandings');
 hideStandingsButton.addEventListener('click', hideStandings);
-
+const playerDiv = document.querySelector('#playerInnerText');
+const deletePlayerButton = document.getElementById("deletePlayer");
+deletePlayerButton.addEventListener("click", deleteDisplayedPlayer);
+let standingsVisible = false;
+const addPlayerButton = document.getElementById("addPlayerButton");
+    addPlayerButton.addEventListener("click", addNewPlayer);
 
 // Search Bar
 const teamSearchBar = document.getElementById("submitTeam").addEventListener("click", function (event) {
   event.preventDefault(); // Prevents the form from submitting and refreshing the page
+ // teamDiv.innerText = 
   
 });
 
 const playerSearchBar = document.getElementById("submitPlayer").addEventListener("click", function(event) {
   event.preventDefault(); // Prevents the form from submitting and refreshing the page
-  
+  playerDiv.innnerText = getPlayers() 
 });
 
 // Data Grab
@@ -119,7 +125,8 @@ function searchPlayer() {
       });
 
       if (foundPlayers.length > 0) {
-        console.log(foundPlayers);
+        console.log(foundPlayers[0].firstname);
+        playerDiv.innerText = `${foundPlayers[0].firstname} ${foundPlayers[0].lastname} / ${foundPlayers[0].college}`;
         displayPlayers(foundPlayers); // Pass the found players to the displayPlayers function
       } else {
         console.log("No players found.");
@@ -136,9 +143,11 @@ function displayPlayers(player) {
 
   const playerElement = document.createElement("div");
   playerElement.textContent = `Name: ${player.firstname} ${player.lastname}, College: ${player.college}`;
+  playerElement.dataset.playerName = `${player.firstname} ${player.lastname}`; // Set the player name as a data attribute
 
   playersContainer.appendChild(playerElement);
 }
+
 getPlayers()
   .then(data => {
     displayPlayers(data);
@@ -147,8 +156,34 @@ getPlayers()
     console.error(error);
   });
 
-  let standingsVisible = false;
+  function getPlayerIdFromDisplay() {
+    const playerElement = document.getElementById("playersContainer").firstChild;
+    const playerId = playerElement.dataset.playerId;
+    return playerId;
+  }
 
+  function getPlayerIdByName(firstname, lastname) {
+    return getPlayers()
+      .then(data => {
+        const foundPlayers = data.filter(player => {
+          const fullName = player.firstname + " " + player.lastname;
+          return fullName.toLowerCase() === `${firstname.toLowerCase()} ${lastname.toLowerCase()}`;
+        });
+  
+        if (foundPlayers.length > 0) {
+          return foundPlayers[0].id;
+        } else {
+          return null; // Return null when player is not found
+        }
+      });
+  }
+
+  function getPlayerNameFromDisplay() {
+    const playerElement = playerDiv
+    const playerName = playerElement.textContent;
+    return playerName;
+  }
+  
   async function checkStandings() {
     try {
       const standings = await getRecords();
@@ -318,6 +353,14 @@ function createPlayer(firstname, lastname, college) {
     });
 }
 
+function addNewPlayer() {
+  const firstName = document.getElementById("newPlayerFirstName").value;
+  const lastName = document.getElementById("newPlayerLastName").value;
+  const college = document.getElementById("newPlayerCollege").value;
+
+  createPlayer(firstName, lastName, college);
+}
+
 function updatePlayer(id, updatedPlayer) {
   fetch(`https://nba-breakdown.herokuapp.com/api/players/${id}`, {
     method: 'PUT',
@@ -343,10 +386,30 @@ function deletePlayer(id) {
     .then(response => response.json())
     .then(data => {
       console.log(data);
-      // Handle the deleted player data here
+      
     })
     .catch(error => {
       console.error(error);
     });
 }
 
+function deleteDisplayedPlayer() {
+  const playerName = getPlayerNameFromDisplay(); // Get the player name from the displayed player element
+  //console.log(playerName);
+  const [firstname, lastname] = playerName.split(" ");
+  
+  
+  getPlayerIdByName(firstname, lastname)
+    .then(playerId => {
+      if (playerId !== null) {
+        deletePlayer(playerId); // Call the deletePlayer function with the player ID
+      } else {
+        throw new Error("Player not found."); // Throw an error when player is not found
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      // Display an error message to the user
+      playerDiv.innerText = "Error: Player not found.";
+    });
+}
