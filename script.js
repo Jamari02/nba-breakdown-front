@@ -4,14 +4,14 @@ const randomPlayer = document.getElementById('random-player').addEventListener('
 const records = document.getElementById('records').addEventListener('click', checkStandings);
 const grabPlayer = document.getElementById('searchFormPlayer').addEventListener('click', searchPlayer);
 const grabTeam = document.getElementById('searchFormTeam').addEventListener('submit', searchTeam);
-const hideStandingsButton = document.getElementById('hideStandings');
-hideStandingsButton.addEventListener('click', hideStandings);
 const playerDiv = document.querySelector('#playerInnerText');
 const deletePlayerButton = document.getElementById("deletePlayer");
 deletePlayerButton.addEventListener("click", deleteDisplayedPlayer);
-let standingsVisible = false;
 const addPlayerButton = document.getElementById("addPlayerButton");
     addPlayerButton.addEventListener("click", addNewPlayer);
+const randPlayForm = document.getElementById('randPlayForm');
+const resultsPlayerDiv = document.getElementById('randPlayResults');
+    
 
 // Search Bar
 const teamSearchBar = document.getElementById("submitTeam").addEventListener("click", function (event) {
@@ -23,6 +23,10 @@ const teamSearchBar = document.getElementById("submitTeam").addEventListener("cl
 const playerSearchBar = document.getElementById("submitPlayer").addEventListener("click", function(event) {
   event.preventDefault(); // Prevents the form from submitting and refreshing the page
   playerDiv.innnerText = getPlayers() 
+});
+
+randPlayForm.addEventListener('submit', function(event) {
+  event.preventDefault(); // Prevent form submission
 });
 
 // Data Grab
@@ -85,33 +89,23 @@ function searchTeam() {
     });
 }
 
-function displayTeams(team) {
-  const teamsContainer = document.getElementById("teamsContainer");
-  teamsContainer.innerHTML = ""; // Clear previous results
+// function displayTeams(team) {
+//   const teamsContainer = document.getElementById("teamsContainer");
+//   teamsContainer.innerHTML = ""; // Clear previous results
 
-  const teamElement = document.createElement("div");
-  teamElement.textContent = `Name: ${team.name}, City: ${team.city}, Code: ${team.code}`;
+//   const teamElement = document.createElement("div");
+//   teamElement.textContent = `Name: ${team.name}, City: ${team.city}, Code: ${team.code}`;
 
-  // // Create a delete button
-  // const deleteButton = document.createElement("button");
-  // deleteButton.textContent = "Delete";
-  // deleteButton.addEventListener("click", function () {
-  //   deleteTeam(team.id); // Call the deleteTeam function with the team id
-  // });
+//   teamsContainer.appendChild(teamElement);
+// }
 
-  // // Append the delete button to the team element
-  // teamElement.appendChild(deleteButton);
-
-  teamsContainer.appendChild(teamElement);
-}
-
-getTeams()
-  .then(data => {
-    displayTeams(data);
-  })
-  .catch(error => {
-    console.error(error);
-  });
+// getTeams()
+//   .then(data => {
+//     displayTeams(data);
+//   })
+//   .catch(error => {
+//     console.error(error);
+//   });
 
 function searchPlayer() {
   let findPlayer = document.getElementById("findPlayer").value;
@@ -125,7 +119,7 @@ function searchPlayer() {
       });
 
       if (foundPlayers.length > 0) {
-        console.log(foundPlayers[0].firstname);
+        console.log(`${foundPlayers[0].firstname} ${foundPlayers[0].lastname}`);
         playerDiv.innerText = `${foundPlayers[0].firstname} ${foundPlayers[0].lastname} / ${foundPlayers[0].college}`;
         displayPlayers(foundPlayers); // Pass the found players to the displayPlayers function
       } else {
@@ -138,16 +132,22 @@ function searchPlayer() {
 }
 
 function displayPlayers(player) {
-  const playersContainer = document.getElementById("playersContainer");
-  playersContainer.innerHTML = ""; // Clear previous results
+  const resultsDiv = document.getElementById("randPlayResults");
+  resultsDiv.innerText = ""; // Clear previous results
 
   const playerElement = document.createElement("div");
   playerElement.textContent = `Name: ${player.firstname} ${player.lastname}, College: ${player.college}`;
-  playerElement.dataset.playerName = `${player.firstname} ${player.lastname}`; // Set the player name as a data attribute
 
-  playersContainer.appendChild(playerElement);
+  resultsDiv.appendChild(playerElement);
 }
 
+getPlayers()
+  .then(data => {
+    displayPlayers(data);
+  })
+  .catch(error => {
+    console.error(error);
+  });
 getPlayers()
   .then(data => {
     displayPlayers(data);
@@ -197,27 +197,15 @@ getPlayers()
         };
       });
   
-      if (standingsVisible) {
-        hideStandings();
+      if (filteredStandings) {
+        
       } else {
         displayStandings(filteredStandings);
-        standingsVisible = true;
       }
   
-      // Show the "hideStandings" button
-      hideStandingsButton.style.display = 'block';
     } catch (error) {
       console.error(error);
     }
-  }
-  
-  function hideStandings() {
-    const standingsContainer = document.getElementById('standingsContainer');
-    standingsContainer.style.display = 'none';
-  
-    hideStandingsButton.style.display = 'none';
-  
-    standingsVisible = false;
   }
   
   function displayStandings(standings) {
@@ -361,18 +349,28 @@ function addNewPlayer() {
   createPlayer(firstName, lastName, college);
 }
 
-function updatePlayer(id, updatedPlayer) {
-  fetch(`https://nba-breakdown.herokuapp.com/api/players/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(updatedPlayer),
-  })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      // Handle the updated player data here
+function updatePlayer(firstname, lastname, updatedPlayer) {
+  getPlayerIdByName(firstname, lastname)
+    .then(playerId => {
+      if (playerId !== null) {
+        fetch(`https://nba-breakdown.herokuapp.com/api/players/${playerId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updatedPlayer),
+        })
+          .then(response => response.json())
+          .then(data => {
+            console.log(data);
+            // Handle the updated player data here
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      } else {
+        throw new Error("Player not found."); // Throw an error when player is not found
+      }
     })
     .catch(error => {
       console.error(error);

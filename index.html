@@ -10,54 +10,60 @@
 <body>
   <div class="buttons">
       <h1>Basketball Breakdown</h1>
-      <button id="random-team">Random Team</button>
       <div id="teamsContainer">
-        
-      </div>
+        <form action="randTeamForm"></form>
+        <input type="text" id="findTeam" placeholder="Random Team...">
+        <button id="random-team">Random Team</button>    
+       </form>
         <form id="searchFormTeam">
             <input type="text" id="findTeam" placeholder="Find Team...">
             <button id="submitTeam">Search</button>
           </form>
+        
+      </div>
+      <div id="playersContainer">
+        <form id="randPlayForm">
         <button id="random-player">Random Player</button>
-        <div id="playersContainer"></div>
+        <div id="randPlayResults"></div> 
+       </form>
         <form id="searchFormPlayer">
             <input type="text" id="findPlayer" placeholder="Find Player...">
             <button id="submitPlayer">Search</button>
+            <div id="playerInnerText"></div>
           </form>
-          <div id="playerInnerText"></div>
           <button id="deletePlayer">Delete Player</button>
-        <button id="records">Get Team Records</button>
-        <button id="hideStandings">Hide Records</button>
-        <div id="standingsContainer"></div>
         <form>
           <label for="newPlayerFirstName">First Name:</label>
           <input type="text" id="newPlayerFirstName" name="newPlayerFirstName"><br><br>
-      
+          
           <label for="newPlayerLastName">Last Name:</label>
           <input type="text" id="newPlayerLastName" name="newPlayerLastName"><br><br>
-      
+          
           <label for="newPlayerCollege">College:</label>
           <input type="text" id="newPlayerCollege" name="newPlayerCollege"><br><br>
-      
+          
           <button id="addPlayerButton" type="button">Add Player</button>
         </form>
-        
+        <form>
+          <label for="playerId">Player ID:</label>
+          <input type="text" id="playerId" name="playerId"><br><br>
+      
+          <label for="updatedPlayerFirstName">First Name:</label>
+          <input type="text" id="updatedPlayerFirstName" name="updatedPlayerFirstName"><br><br>
+      
+          <label for="updatedPlayerLastName">Last Name:</label>
+          <input type="text" id="updatedPlayerLastName" name="updatedPlayerLastName"><br><br>
+      
+          <label for="updatedPlayerCollege">College:</label>
+          <input type="text" id="updatedPlayerCollege" name="updatedPlayerCollege"><br><br>
+      
+          <button id="updatePlayerButton" type="button">Update Player</button>
+        </form>
+      
       </div>    
-      <form>
-        <label for="playerId">Player ID:</label>
-        <input type="text" id="playerId" name="playerId"><br><br>
-    
-        <label for="updatedPlayerFirstName">First Name:</label>
-        <input type="text" id="updatedPlayerFirstName" name="updatedPlayerFirstName"><br><br>
-    
-        <label for="updatedPlayerLastName">Last Name:</label>
-        <input type="text" id="updatedPlayerLastName" name="updatedPlayerLastName"><br><br>
-    
-        <label for="updatedPlayerCollege">College:</label>
-        <input type="text" id="updatedPlayerCollege" name="updatedPlayerCollege"><br><br>
-    
-        <button id="updatePlayerButton" type="button">Update Player</button>
-      </form>
+      <div id="standingsContainer">
+        <button id="records">Get Team Records</button>
+      </div>
     <script src="script.js" ></script> 
 </body>
 </html>
