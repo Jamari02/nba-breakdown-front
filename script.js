@@ -1,22 +1,30 @@
-// Buttons
+// Team Buttons/ Elements
+const grabTeam = document.getElementById('searchFormTeam').addEventListener('click', searchTeam);
 const randomTeam = document.getElementById('random-team').addEventListener('click', newTeam);
-const randomPlayer = document.getElementById('random-player').addEventListener('click', newPlayer);
-const records = document.getElementById('records').addEventListener('click', checkStandings);
+const teamDiv = document.querySelector('#teamInnerText')
+const addTeamButton = document.getElementById('addTeamButton').addEventListener('click', addNewTeam)
+const updateTeamButton = document.getElementById('updateTeamButton').addEventListener('click', updateTeamHandler)
+const deleteTeamButton = document.getElementById('deleteTeamButton').addEventListener('click', deleteTeamHandler)
+
+//Player Buttons/ Elements
 const grabPlayer = document.getElementById('searchFormPlayer').addEventListener('click', searchPlayer);
-const grabTeam = document.getElementById('searchFormTeam').addEventListener('submit', searchTeam);
+const randomPlayer = document.getElementById('random-player').addEventListener('click', newPlayer);
 const playerDiv = document.querySelector('#playerInnerText');
-const deletePlayerButton = document.getElementById("deletePlayer");
-deletePlayerButton.addEventListener("click", deleteDisplayedPlayer);
-const addPlayerButton = document.getElementById("addPlayerButton");
-    addPlayerButton.addEventListener("click", addNewPlayer);
 const randPlayForm = document.getElementById('randPlayForm');
 const resultsPlayerDiv = document.getElementById('randPlayResults');
-    
+const addPlayerButton = document.getElementById("addPlayerButton").addEventListener("click", addNewPlayer);
+const updatePlayerButton = document.getElementById('updatePlayerButton');
+const updatedPlayerCollegeInput = document.getElementById('updatedPlayerCollege');
+const deletePlayerButton = document.getElementById("deletePlayForm").addEventListener("click", deletePlayer);
+const playerIdInput = document.getElementById('playerId');
+//Record Button
+const records = document.getElementById('records').addEventListener('click', checkStandings);
+const clearStandingsButton = document.getElementById('clearStandings').addEventListener('click', clearStandings);
 
 // Search Bar
 const teamSearchBar = document.getElementById("submitTeam").addEventListener("click", function (event) {
   event.preventDefault(); // Prevents the form from submitting and refreshing the page
- // teamDiv.innerText = 
+ teamDiv.innerText = getTeams()
   
 });
 
@@ -27,6 +35,16 @@ const playerSearchBar = document.getElementById("submitPlayer").addEventListener
 
 randPlayForm.addEventListener('submit', function(event) {
   event.preventDefault(); // Prevent form submission
+});
+
+updatePlayerButton.addEventListener('click', () => {
+  const playerId = playerIdInput.value;
+  const updatedPlayer = {
+    college: updatedPlayerCollegeInput.value,
+  };
+  const [firstName, lastName] = playerId.split(' '); // Split the playerId into first and last name
+
+  updatePlayer(firstName, lastName, updatedPlayer);
 });
 
 // Data Grab
@@ -76,36 +94,50 @@ async function getRecords() {
 
 function searchTeam() {
   let findTeam = document.getElementById("findTeam").value;
-  console.log("Searching for: " + findTeam);
 
   getTeams()
     .then(data => {
-      const foundTeams = data.filter(team => team.name.toLowerCase().includes(findTeam.toLowerCase()));
+      const foundTeams = data.filter(team => {
+        const teamName = team.name.toLowerCase();
+        const teamCity = team.city.toLowerCase();
+        const teamCode = team.code.toLowerCase();
+        return teamName.includes(findTeam.toLowerCase()) || teamCity.includes(findTeam.toLowerCase()) || teamCode.includes(findTeam.toLowerCase());
+      });
       console.log(foundTeams);
       displayTeams(foundTeams); // Pass the found teams to the displayTeams function
+
+      // Update teamDiv with the found teams
+      if (foundTeams.length > 0) {
+        teamDiv.innerText = ""; // Clear the previous content
+        foundTeams.forEach(team => {
+          teamDiv.innerText = `${team.name} / ${team.city} / ${team.code}`;
+        });
+      } else {
+        teamDiv.innerText = "No teams found.";
+      }
     })
     .catch(error => {
       console.error(error);
     });
 }
 
-// function displayTeams(team) {
-//   const teamsContainer = document.getElementById("teamsContainer");
-//   teamsContainer.innerHTML = ""; // Clear previous results
+function displayTeams(team) {
+  const teamResults= document.getElementById("randTeamResults");
+  teamResults.innerHTML = ""; // Clear previous results
 
-//   const teamElement = document.createElement("div");
-//   teamElement.textContent = `Name: ${team.name}, City: ${team.city}, Code: ${team.code}`;
+    const teamElement = document.createElement("div");
+    teamElement.innerHTML = `<p>Name: ${team.name}</p><p>City: ${team.city}</p><p>Code: ${team.code}</p>`;
+    teamResults.appendChild(teamElement);
 
-//   teamsContainer.appendChild(teamElement);
-// }
+}
 
-// getTeams()
-//   .then(data => {
-//     displayTeams(data);
-//   })
-//   .catch(error => {
-//     console.error(error);
-//   });
+getTeams()
+  .then(data => {
+    displayTeams(data);
+  })
+  .catch(error => {
+    console.error(error);
+  });
 
 function searchPlayer() {
   let findPlayer = document.getElementById("findPlayer").value;
@@ -148,68 +180,21 @@ getPlayers()
   .catch(error => {
     console.error(error);
   });
-getPlayers()
-  .then(data => {
-    displayPlayers(data);
-  })
-  .catch(error => {
-    console.error(error);
-  });
 
-  function getPlayerIdFromDisplay() {
-    const playerElement = document.getElementById("playersContainer").firstChild;
-    const playerId = playerElement.dataset.playerId;
-    return playerId;
-  }
-
-  function getPlayerIdByName(firstname, lastname) {
-    return getPlayers()
-      .then(data => {
-        const foundPlayers = data.filter(player => {
-          const fullName = player.firstname + " " + player.lastname;
-          return fullName.toLowerCase() === `${firstname.toLowerCase()} ${lastname.toLowerCase()}`;
-        });
-  
-        if (foundPlayers.length > 0) {
-          return foundPlayers[0].id;
-        } else {
-          return null; // Return null when player is not found
-        }
-      });
-  }
-
-  function getPlayerNameFromDisplay() {
-    const playerElement = playerDiv
-    const playerName = playerElement.textContent;
-    return playerName;
-  }
   
   async function checkStandings() {
     try {
       const standings = await getRecords();
   
-      const filteredStandings = standings.map(standing => {
-        return {
-          season: standing.season,
-          team: standing.team,
-          win: standing.win,
-          loss: standing.loss
-        };
-      });
-  
-      if (filteredStandings) {
-        
-      } else {
-        displayStandings(filteredStandings);
-      }
-  
+      // Display the standings
+      displayStandings(standings);
     } catch (error) {
       console.error(error);
     }
   }
   
   function displayStandings(standings) {
-    const standingsContainer = document.getElementById('standingsContainer');
+    const standingsContainer = document.getElementById('standingResults');
     standingsContainer.innerHTML = ''; // Clear previous results
   
     standings.forEach(standing => {
@@ -220,6 +205,11 @@ getPlayers()
       standingsContainer.appendChild(standingElement);
     });
   }
+
+  function clearStandings() {
+  const standingsContainer = document.getElementById('standingResults');
+  standingsContainer.innerHTML = '';
+}
   
 function newTeam() {
   getTeams()
@@ -243,22 +233,23 @@ function newTeam() {
 
 function newPlayer() {
   getPlayers()
-    .then(data => {
-      // Get the total number of players
-      const totalPlayers = data.length;
+  .then(data => {
+    // Get the total number of players
+    const totalPlayers = data.length;
+    
+    // Generate a random index between 0 and totalPlayers-1
+    const randomPlayerIndex = Math.floor(Math.random() * totalPlayers);
+    
+    // Get the random player
+    const randomPlayer = data[randomPlayerIndex];
+    
+    // Display the random player
+    displayPlayers(randomPlayer);
 
-      // Generate a random index between 0 and totalPlayers-1
-      const randomPlayerIndex = Math.floor(Math.random() * totalPlayers);
-
-      // Get the random player
-      const randomPlayer = data[randomPlayerIndex];
-
-      // Display the random player
-      displayPlayers(randomPlayer);
-    })
-    .catch(error => {
-      console.error(error);
-    });
+  })
+  .catch(error => {
+    console.error(error);
+  });
 }
 
 function createTeam(name, city, code) {
@@ -267,7 +258,7 @@ function createTeam(name, city, code) {
     city: city,
     code: code
   };
-
+  
   fetch('https://nba-breakdown.herokuapp.com/api/team', {
     method: 'POST',
     headers: {
@@ -275,18 +266,39 @@ function createTeam(name, city, code) {
     },
     body: JSON.stringify(newTeam),
   })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      // Handle the created team data here
-    })
-    .catch(error => {
-      console.error(error);
-    });
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+    // Handle the created team data here
+  })
+  .catch(error => {
+    console.error(error);
+  });
 }
 
-function updateTeam(id, updatedTeam) {
-  fetch(`https://nba-breakdown.herokuapp.com/api/team/${id}`, {
+function addNewTeam() {
+  const name = document.getElementById("newTeamName").value;
+  const city = document.getElementById("newTeamCity").value;
+  const code = document.getElementById("newTeamCode").value;
+
+  createTeam(name, city, code);
+}
+
+function updateTeamHandler() {
+  const teamId = document.getElementById("teamId").value;
+  const updatedCity = document.getElementById("updatedTeamCity").value;
+  const updatedCode = document.getElementById("updatedTeamCode").value;
+
+  const updatedTeam = {
+    city: updatedCity,
+    code: updatedCode,
+  };
+
+  updateTeam(teamId, updatedTeam);
+}
+
+function updateTeam(name, updatedTeam) {
+  fetch(`https://nba-breakdown.herokuapp.com/api/team/name/${name}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -303,18 +315,25 @@ function updateTeam(id, updatedTeam) {
     });
 }
 
-function deleteTeam(id) {
-  fetch(`https://nba-breakdown.herokuapp.com/api/team/${id}`, {
+
+function deleteTeam(name) {
+  fetch(`https://nba-breakdown.herokuapp.com/api/team/name/${name}`, {
     method: 'DELETE',
   })
     .then(response => response.json())
     .then(data => {
       console.log(data);
-      // Handle the deleted team data here
+      console.log(`${name} has been deleted`)
     })
     .catch(error => {
       console.error(error);
     });
+}
+
+function deleteTeamHandler() {
+  const teamId = document.getElementById("deleteTeamId").value;
+
+  deleteTeam(teamId);
 }
 
 function createPlayer(firstname, lastname, college) {
@@ -349,65 +368,54 @@ function addNewPlayer() {
   createPlayer(firstName, lastName, college);
 }
 
-function updatePlayer(firstname, lastname, updatedPlayer) {
-  getPlayerIdByName(firstname, lastname)
-    .then(playerId => {
-      if (playerId !== null) {
-        fetch(`https://nba-breakdown.herokuapp.com/api/players/${playerId}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(updatedPlayer),
-        })
-          .then(response => response.json())
-          .then(data => {
-            console.log(data);
-            // Handle the updated player data here
-          })
-          .catch(error => {
-            console.error(error);
-          });
-      } else {
-        throw new Error("Player not found."); // Throw an error when player is not found
+function updatePlayer(firstName, lastName, updatedPlayer) {
+  fetch(`https://nba-breakdown.herokuapp.com/api/players/${firstName}/${lastName}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(updatedPlayer),
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Player not found.'); // Throw an error when player is not found
       }
+      return response.json();
+    })
+    .then(data => {
+      console.log(data);
+      // Handle the updated player data here
     })
     .catch(error => {
       console.error(error);
     });
 }
 
-function deletePlayer(id) {
-  fetch(`https://nba-breakdown.herokuapp.com/api/players/${id}`, {
+function deletePlayer(event) {
+  event.preventDefault();
+
+  const firstname = document.getElementById("deletePlayFirstName").value;
+  const lastname = document.getElementById("deletePlayLastName").value;
+
+  fetch(`https://nba-breakdown.herokuapp.com/api/players/${firstname}/${lastname}`, {
     method: 'DELETE',
   })
     .then(response => response.json())
     .then(data => {
       console.log(data);
-      
+      // Handle the deleted player data here
     })
     .catch(error => {
       console.error(error);
     });
 }
 
-function deleteDisplayedPlayer() {
-  const playerName = getPlayerNameFromDisplay(); // Get the player name from the displayed player element
-  //console.log(playerName);
-  const [firstname, lastname] = playerName.split(" ");
-  
-  
-  getPlayerIdByName(firstname, lastname)
-    .then(playerId => {
-      if (playerId !== null) {
-        deletePlayer(playerId); // Call the deletePlayer function with the player ID
-      } else {
-        throw new Error("Player not found."); // Throw an error when player is not found
-      }
-    })
-    .catch(error => {
-      console.error(error);
-      // Display an error message to the user
-      playerDiv.innerText = "Error: Player not found.";
-    });
-}
+
+
+
+
+
+
+
+
+

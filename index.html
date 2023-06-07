@@ -8,30 +8,65 @@
     <link rel ="stylesheet"  href="style.css"/>
 </head>
 <body>
-  <div class="buttons">
+      <div id="h1"> 
       <h1>Basketball Breakdown</h1>
-      <div id="teamsContainer">
-        <form action="randTeamForm"></form>
-        <input type="text" id="findTeam" placeholder="Random Team...">
-        <button id="random-team">Random Team</button>    
-       </form>
-        <form id="searchFormTeam">
-            <input type="text" id="findTeam" placeholder="Find Team...">
-            <button id="submitTeam">Search</button>
-          </form>
-        
       </div>
+   <div id="teamsContainer">
+    <form id="randTeamForm"></form>
+        <button id="random-team">Random Team</button> 
+        <!-- <button id="clearRandomTeam">Clear</button> -->
+        <div id="randTeamResults"></div>   
+    </form>
+      <form id="searchFormTeam">
+          <input type="text" id="findTeam" placeholder="Find Team...">
+          <button id="submitTeam">Search</button>
+          <!-- <button id="clearSearchTeam">Clear</button> -->
+          <div id="teamInnerText"></div>
+      </form>
+  <form id="addTeamForm">
+    <label for="newTeamName">Team Name:</label>
+    <input type="text" id="newTeamName" name="newTeamName"><br><br>
+    
+    <label for="newTeamCity">City:</label>
+    <input type="text" id="newTeamCity" name="newTeamCity"><br><br>
+    
+    <label for="newTeamCode">Code:</label>
+    <input type="text" id="newTeamCode" name="newTeamCode"><br><br>
+    
+    <button id="addTeamButton" type="button">Add Team</button>
+  </form>
+  
+  <form id="updateTeamForm">
+    <label for="teamId">Team Name:</label>
+    <input type="text" id="teamId" name="teamId"><br><br>
+    <label for="updatedTeamCity">City:</label>
+    <input type="text" id="updatedTeamCity" name="updatedTeamCity"><br><br>
+    <label for="updatedTeamCode">Code:</label>
+    <input type="text" id="updatedTeamCode" name="updatedTeamCode"><br><br>
+  
+    <button id="updateTeamButton" type="button">Update Team</button>
+  </form>
+  
+  <form id="deleteTeamForm">
+    <label for="deleteTeamId">Team Name:</label>
+    <input type="text" id="deleteTeamId" name="deleteTeamId"><br><br>
+    <button id="deleteTeamButton" type="button">Delete Team</button>
+  </form>
+   </div>
+
       <div id="playersContainer">
         <form id="randPlayForm">
         <button id="random-player">Random Player</button>
+        <!-- <button id="clearRandomPlayer">Clear</button> -->
         <div id="randPlayResults"></div> 
        </form>
         <form id="searchFormPlayer">
             <input type="text" id="findPlayer" placeholder="Find Player...">
             <button id="submitPlayer">Search</button>
+            <!-- <button id="clearSearchPlayer">Clear</button> -->
             <div id="playerInnerText"></div>
-          </form>
-          <button id="deletePlayer">Delete Player</button>
+        </form>
+      
         <form>
           <label for="newPlayerFirstName">First Name:</label>
           <input type="text" id="newPlayerFirstName" name="newPlayerFirstName"><br><br>
@@ -45,24 +80,23 @@
           <button id="addPlayerButton" type="button">Add Player</button>
         </form>
         <form>
-          <label for="playerId">Player ID:</label>
+          <label for="playerId">Player Name:</label>
           <input type="text" id="playerId" name="playerId"><br><br>
-      
-          <label for="updatedPlayerFirstName">First Name:</label>
-          <input type="text" id="updatedPlayerFirstName" name="updatedPlayerFirstName"><br><br>
-      
-          <label for="updatedPlayerLastName">Last Name:</label>
-          <input type="text" id="updatedPlayerLastName" name="updatedPlayerLastName"><br><br>
-      
           <label for="updatedPlayerCollege">College:</label>
           <input type="text" id="updatedPlayerCollege" name="updatedPlayerCollege"><br><br>
       
           <button id="updatePlayerButton" type="button">Update Player</button>
         </form>
-      
+        <form id="deletePlayForm">
+          <input type="text" id="deletePlayFirstName" placeholder="First Name">
+          <input type="text" id="deletePlayLastName" placeholder="Last Name">
+          <button type="submit">Delete Player</button>
+        </form>
       </div>    
       <div id="standingsContainer">
         <button id="records">Get Team Records</button>
+        <button id="clearStandings">Clear Standings</button>
+        <div id="standingResults"></div>
       </div>
     <script src="script.js" ></script> 
 </body>

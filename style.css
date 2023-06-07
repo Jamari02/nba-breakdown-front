@@ -1,84 +1,60 @@
-/* body {
-    background: linear-gradient(black, orange);
+body {  
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 0.8fr 3.5fr;
+  gap: 40px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "h1 h1 h1"
+    "teamsContainer standingsContainer playersContainter";
     height: 100vh;
     width: 100vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+    background-color: black;
+}
+
+#h1 { 
+  color: orange;
+  grid-area: h1; 
+  text-align: center;
+  background-image: url('../nba-breakdown-front/images/Hoop\ header.jpeg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-size: 30px;
+
+}
+#teamsContainer { 
+  grid-area: teamsContainer; 
+  text-align: center;
+  background-color: blue;
+  color: white;
+  font-size: 20px;
+}
+
+#standingsContainer { 
+  grid-area: standingsContainer;
+  text-align: center;
+  background-color: red;
+  color:antiquewhite;
+  font-size: 16px;
+ }
+
+ #records {
+  margin:20px;
+ }
+
+ #standingResults > div {
+  margin:10px;
+ }
+
+#playersContainer { 
+  grid-area: playersContainter; 
+  text-align: center;
+  background-color: white;
+  font-size: 20px;
+}
+
+form {
+  margin:20px;
+}
   
-  h1 {
-    display: flex;
-    justify-self: flex-start;
-    color: orange;
-    font-size: 50px;
-  }
-  
-  .buttons {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 10px;
-    padding: 20px;
-    width: 100vw;
-    margin-right: 200px;
-  }
-  
-  #random-team {
-    height: 50px;
-    width:200px;
-    background-color: black;
-    color: orange;
-    border-radius: 10px;
-    margin: 30px;
-  }
-
-  #teams-container{
-    font-size: 30px;
-  }
-
-  #searchFormTeam {
-    margin: 10px;
-  }
-
-  #random-player {
-    height: 50px;
-    width:200px;
-    background-color: black;
-    color: orange;
-    border-radius: 10px;
-    margin: 10px;
-  }
-
-  #searchFormPlayer {
-    margin: 10px;
-  }
-
-  #records {
-    height: 50px;
-    width:200px;
-    background-color: black;
-    color: orange;
-    border-radius: 10px;
-    margin: 30px;
-  }
-
-  #hideStandings {
-    height: 50px;
-    width:200px;
-    background-color: black;
-    color: orange;
-    border-radius: 10px;
-  } */
-
-
-  #randPlayResults {
-    color: orange;
-    font-size: 20px;
-  }
-
-  #playerInnerText {
-    color: orange;
-    font-size: 20px;
-  }
+ 
