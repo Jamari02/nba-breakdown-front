@@ -5,6 +5,18 @@ const teamDiv = document.querySelector('#teamInnerText')
 const addTeamButton = document.getElementById('addTeamButton').addEventListener('click', addNewTeam)
 const updateTeamButton = document.getElementById('updateTeamButton').addEventListener('click', updateTeamHandler)
 const deleteTeamButton = document.getElementById('deleteTeamButton').addEventListener('click', deleteTeamHandler)
+const clearTeamButton = document.getElementById("clearTeamButton").addEventListener("click", (event) => {
+  
+  document.getElementById("randTeamResults").innerText = "";
+  document.getElementById("teamInnerText").innerText = "";
+  
+  const inputElements = document.getElementsByTagName("input");
+  for (let i = 0; i < inputElements.length; i++) {
+    inputElements[i].value = "";
+  }
+  
+  });
+
 
 //Player Buttons/ Elements
 const grabPlayer = document.getElementById('searchFormPlayer').addEventListener('click', searchPlayer);
@@ -17,6 +29,17 @@ const updatePlayerButton = document.getElementById('updatePlayerButton');
 const updatedPlayerCollegeInput = document.getElementById('updatedPlayerCollege');
 const deletePlayerButton = document.getElementById("deletePlayForm").addEventListener("click", deletePlayer);
 const playerIdInput = document.getElementById('playerId');
+const clearPlayerButton = document.getElementById("clearPlayerButton").addEventListener("click", () => {
+ 
+  document.getElementById("randPlayResults").innerText = "";
+  document.getElementById("playerInnerText").innerText = "";
+
+  // Clear input values
+  const inputElements = document.getElementsByTagName("input");
+  for (let i = 0; i < inputElements.length; i++) {
+    inputElements[i].value = "";
+  }
+});
 //Record Button
 const records = document.getElementById('records').addEventListener('click', checkStandings);
 const clearStandingsButton = document.getElementById('clearStandings').addEventListener('click', clearStandings);
@@ -155,7 +178,7 @@ function searchPlayer() {
         playerDiv.innerText = `${foundPlayers[0].firstname} ${foundPlayers[0].lastname} / ${foundPlayers[0].college}`;
         displayPlayers(foundPlayers); // Pass the found players to the displayPlayers function
       } else {
-        console.log("No players found.");
+        playerDiv.innerText= "No players found."
       }
     })
     .catch(error => {
@@ -286,10 +309,12 @@ function addNewTeam() {
 
 function updateTeamHandler() {
   const teamId = document.getElementById("teamId").value;
+  const updatedName = document.getElementById("updatedTeamName").value;
   const updatedCity = document.getElementById("updatedTeamCity").value;
   const updatedCode = document.getElementById("updatedTeamCode").value;
 
   const updatedTeam = {
+    name : updatedName,
     city: updatedCity,
     code: updatedCode,
   };
@@ -297,8 +322,8 @@ function updateTeamHandler() {
   updateTeam(teamId, updatedTeam);
 }
 
-function updateTeam(name, updatedTeam) {
-  fetch(`https://nba-breakdown.herokuapp.com/api/team/name/${name}`, {
+function updateTeam(id, updatedTeam) {
+  fetch(`https://nba-breakdown.herokuapp.com/api/team/name/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -314,7 +339,6 @@ function updateTeam(name, updatedTeam) {
       console.error(error);
     });
 }
-
 
 function deleteTeam(name) {
   fetch(`https://nba-breakdown.herokuapp.com/api/team/name/${name}`, {

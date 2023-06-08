@@ -2,7 +2,7 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 0.8fr 3.5fr;
-  gap: 40px 0px;
+  gap: 30px 0px;
   grid-auto-flow: row;
   grid-template-areas:
     "h1 h1 h1"
@@ -36,10 +36,83 @@ body {
   background-color: red;
   color:antiquewhite;
   font-size: 16px;
+  font-weight: bold;
  }
+
+ #random-team {
+    height: 40px;
+    width: 150px;
+    border-radius: 10px;
+    background-color: red;
+    font-size: 20px;
+    color: white;
+ }
+
+ #submitTeam {
+  height: 28px;
+  width: 150px;
+  border-radius: 10px;
+  background-color: red;
+  font-size: 20px;
+  color: white;
+}
+
+#addTeamButton {
+  height: 40px;
+  width: 150px;
+  border-radius: 10px;
+  background-color: red;
+  font-size: 20px;
+  color: white;
+}
+
+#updateTeamButton {
+  height: 40px;
+  width: 150px;
+  border-radius: 10px;
+  background-color: red;
+  font-size: 20px;
+  color: white;
+}
+
+#deleteTeamButton {
+  height: 40px;
+  width: 150px;
+  border-radius: 10px;
+  background-color: red;
+  font-size: 20px;
+  color: white;
+}
+
+#clearTeamButton {
+  height: 40px;
+  width: 150px;
+  border-radius: 10px;
+  background-color: red;
+  font-size: 20px;
+  color: white;
+}
 
  #records {
   margin:20px;
+  height: 40px;
+  width: 150px;
+  border-radius: 10px;
+  background-color: white;
+  font-size: 15px;
+  color: blue;
+  font-weight: bold;
+ }
+
+ #clearStandings {
+  margin:20px;
+  height: 40px;
+  width: 150px;
+  border-radius: 10px;
+  background-color: white;
+  font-size: 15px;
+  color: blue;
+  font-weight: bold;
  }
 
  #standingResults > div {
@@ -53,8 +126,68 @@ body {
   font-size: 20px;
 }
 
+#random-player {
+  height: 40px;
+  width: 150px;
+  border-radius: 10px;
+  background-color: blue;
+  font-size: 15px;
+  color: black;
+  font-weight: bold;
+}
+
+#submitPlayer {
+  height: 40px;
+  width: 150px;
+  border-radius: 10px;
+  background-color: blue;
+  font-size: 15px;
+  color: black;
+  font-weight: bold;
+}
+
+#addPlayerButton {
+  height: 40px;
+  width: 150px;
+  border-radius: 10px;
+  background-color: blue;
+  font-size: 15px;
+  color: black;
+  font-weight: bold;
+}
+
+#updatePlayerButton {
+  height: 40px;
+  width: 150px;
+  border-radius: 10px;
+  background-color: blue;
+  font-size: 15px;
+  color: black;
+  font-weight: bold;
+}
+
+#deletePlayerButton {
+  height: 40px;
+  width: 150px;
+  border-radius: 10px;
+  background-color: blue;
+  font-size: 15px;
+  color: black;
+  font-weight: bold;
+}
+
+#clearPlayerButton {
+  height: 40px;
+  width: 150px;
+  border-radius: 10px;
+  background-color: blue;
+  font-size: 15px;
+  color: black;
+  font-weight: bold;
+}
+
 form {
-  margin:20px;
+  margin:10px;
 }
   
  

@@ -9,7 +9,7 @@
 </head>
 <body>
       <div id="h1"> 
-      <h1>Basketball Breakdown</h1>
+        <h1>Basketball Breakdown</h1>
       </div>
    <div id="teamsContainer">
     <form id="randTeamForm"></form>
@@ -39,6 +39,8 @@
   <form id="updateTeamForm">
     <label for="teamId">Team Name:</label>
     <input type="text" id="teamId" name="teamId"><br><br>
+    <label for="updatedTeamName">Name:</label>
+    <input type="text" id="updatedTeamName" name="updatedTeamName"><br><br>
     <label for="updatedTeamCity">City:</label>
     <input type="text" id="updatedTeamCity" name="updatedTeamCity"><br><br>
     <label for="updatedTeamCode">Code:</label>
@@ -52,8 +54,8 @@
     <input type="text" id="deleteTeamId" name="deleteTeamId"><br><br>
     <button id="deleteTeamButton" type="button">Delete Team</button>
   </form>
+  <button id="clearTeamButton" type="button">Clear</button>
    </div>
-
       <div id="playersContainer">
         <form id="randPlayForm">
         <button id="random-player">Random Player</button>
@@ -90,8 +92,9 @@
         <form id="deletePlayForm">
           <input type="text" id="deletePlayFirstName" placeholder="First Name">
           <input type="text" id="deletePlayLastName" placeholder="Last Name">
-          <button type="submit">Delete Player</button>
+          <button id="deletePlayerButton" type="submit">Delete Player</button>
         </form>
+        <button id="clearPlayerButton" type="button">Clear</button>
       </div>    
       <div id="standingsContainer">
         <button id="records">Get Team Records</button>
